@@ -1,0 +1,33 @@
+{
+  "name": "iyzipay-egitim",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "npx @babel/node",
+    "dev": "babel src --out-dir=./build --copy-files --watch",
+    "build": "babel src --out-dir=./build --copy-files",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MusabBayram/Iyzipay-Egitim.git"
+  },
+  "author": "Musab",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MusabBayram/Iyzipay-Egitim/issues"
+  },
+  "homepage": "https://github.com/MusabBayram/Iyzipay-Egitim#readme",
+  "devDependencies": {
+    "@babel/cli": "^7.18.10",
+    "@babel/core": "^7.19.0",
+    "@babel/node": "^7.18.10",
+    "@babel/preset-env": "^7.19.0",
+    "@babel/register": "^7.18.9"
+  },
+  "dependencies": {
+    "iyzipay": "^2.0.48",
+    "nanoid": "^3.2.0"
+  }
+}
