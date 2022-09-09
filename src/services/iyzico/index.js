@@ -3,6 +3,7 @@ import * as Cards from './methods/cards';
 import * as Installments from './methods/installments';
 import nanoid from '../../utils/nanoid';
 import * as Logs from '../../utils/logs';
+import  * as Payments from './methods/payments'
 
 
 /* ---------------------------------------------- */
@@ -122,4 +123,272 @@ const checkInstallments = () => {
     })
 }
 
-checkInstallments()
+//checkInstallments()
+
+
+/* ---------------------------------------------- */
+/* c) Normal Payments                                       */
+/* ---------------------------------------------- */
+
+// kayıtlı olmayan kartla ödeme yapmak
+
+const createPayment = () => {
+    return Payments.createPayment({
+        locale: Iyzipay.LOCALE.TR,
+        conversationId: nanoid(),
+        price: "300",
+        paidPrice: "300",
+        currency: Iyzipay.CURRENCY.TRY,
+        installment: "1",
+        basketId: "B67JDL",
+        paymentChannel: Iyzipay.PAYMENT_CHANNEL.WEB,
+        paymentGroup: Iyzipay.PAYMENT_GROUP.PRODUCT,
+        paymentCard: {
+            cardHolderName: "John Doe",
+            cardNumber: "5528790000000008",
+            expireMonth: "12",
+            expireYear: "2030",
+            cvc: '123',
+            registerCard: '0'
+        },
+        buyer: {
+            id: "SDFJKL",
+            name: "John",
+            surname: "Doe",
+            gsmNumber: "+905350000000",
+            email: "email@email.com",
+            identityNumber: "743008664791",
+            lastLoginDate: "2020-10-05 12:43:35",
+            registrationDate: "2022-09-09 12:43:35",
+            registrationAddress: "Nidakule Göstepe, Merdivenkoy mah. Bora sk. No: 1",
+            ip: "85.34.78.112",
+            city: "Istanbul",
+            country: "Turkey",
+            zipCode: "34732"
+        },
+        shippingAddress: {
+            contactName: "John Doe",
+            city: "Istanbul",
+            country: "Turkey",
+            address: "Nidakule Göstepe, Merdivenkoy mah. Bora sk. No: 1",
+            zipCode: "34732"
+        },
+        billingAddress: {
+            contactName: "John Doe",
+            city: "Istanbul",
+            country: "Turkey",
+            address: "Nidakule Göstepe, Merdivenkoy mah. Bora sk. No: 1",
+            zipCode: "34732"
+        },
+        basketItems: [
+            {
+                id: "BT101",
+                name: "Samsung s20",
+                category1: "Telefonlar",
+                category2: "Android Telefonlar",
+                itemType: Iyzipay.BASKET_ITEM_TYPE.PHYSICAL,
+                price: 90
+            },
+            {
+                id: "BT102",
+                name: "Iphone 12",
+                category1: "Telefonlar",
+                category2: "iOS Telefonlar",
+                itemType: Iyzipay.BASKET_ITEM_TYPE.PHYSICAL,
+                price: 150
+            },
+            {
+                id: "BT103",
+                name: "Samsung s10",
+                category1: "Telefonlar",
+                category2: "Android Telefonlar",
+                itemType: Iyzipay.BASKET_ITEM_TYPE.PHYSICAL,
+                price: 60
+            }
+        ]
+
+    }).then((result) => {
+        console.log(result);
+        Logs.logFile("6-paments-yeni-bir-kartla-odeme-al-ve-kartı-kaydetme", result)
+    }).catch((err) => {
+    console.log(err);
+        Logs.logFile("6-paments-yeni-bir-kartla-odeme-al-ve-kartı-kaydetme-hata", err)
+    })
+}
+
+//createPayment()
+
+//kart kayıt ederek ödeme yapmak
+
+const createPaymentAndSaveCard = () => {
+    return Payments.createPayment({
+        locale: Iyzipay.LOCALE.TR,
+        conversationId: nanoid(),
+        price: "300",
+        paidPrice: "300",
+        currency: Iyzipay.CURRENCY.TRY,
+        installment: "1",
+        basketId: "B67JDL",
+        paymentChannel: Iyzipay.PAYMENT_CHANNEL.WEB,
+        paymentGroup: Iyzipay.PAYMENT_GROUP.PRODUCT,
+        paymentCard: {
+            cardUserKey: "GNsqxvMEP3ecW+SW2BJVqvgS5ts=",
+            cardAlias: "Kredi Kartım Ödemeden Sonra",
+            cardHolderName: "John Doe",
+            cardNumber: "5528790000000008",
+            expireMonth: "12",
+            expireYear: "2030",
+            cvc: '123',
+            registerCard: '1'
+        },
+        buyer: {
+            id: "SDFJKL",
+            name: "John",
+            surname: "Doe",
+            gsmNumber: "+905350000000",
+            email: "email@email.com",
+            identityNumber: "743008664791",
+            lastLoginDate: "2020-10-05 12:43:35",
+            registrationDate: "2022-09-09 12:43:35",
+            registrationAddress: "Nidakule Göstepe, Merdivenkoy mah. Bora sk. No: 1",
+            ip: "85.34.78.112",
+            city: "Istanbul",
+            country: "Turkey",
+            zipCode: "34732"
+        },
+        shippingAddress: {
+            contactName: "John Doe",
+            city: "Istanbul",
+            country: "Turkey",
+            address: "Nidakule Göstepe, Merdivenkoy mah. Bora sk. No: 1",
+            zipCode: "34732"
+        },
+        billingAddress: {
+            contactName: "John Doe",
+            city: "Istanbul",
+            country: "Turkey",
+            address: "Nidakule Göstepe, Merdivenkoy mah. Bora sk. No: 1",
+            zipCode: "34732"
+        },
+        basketItems: [
+            {
+                id: "BT101",
+                name: "Samsung s20",
+                category1: "Telefonlar",
+                category2: "Android Telefonlar",
+                itemType: Iyzipay.BASKET_ITEM_TYPE.PHYSICAL,
+                price: 90
+            },
+            {
+                id: "BT102",
+                name: "Iphone 12",
+                category1: "Telefonlar",
+                category2: "iOS Telefonlar",
+                itemType: Iyzipay.BASKET_ITEM_TYPE.PHYSICAL,
+                price: 150
+            },
+            {
+                id: "BT103",
+                name: "Samsung s10",
+                category1: "Telefonlar",
+                category2: "Android Telefonlar",
+                itemType: Iyzipay.BASKET_ITEM_TYPE.PHYSICAL,
+                price: 60
+            }
+        ]
+
+    }).then((result) => {
+        console.log(result);
+        Logs.logFile("7-paments-yeni-bir-kartla-odeme-al-ve-kartı-kaydet", result)
+    }).catch((err) => {
+    console.log(err);
+        Logs.logFile("7-paments-yeni-bir-kartla-odeme-al-ve-kartı-kaydet-hata", err)
+    })
+}
+
+//createPaymentAndSaveCard()
+//readCardsOfAUser()
+
+//Kayıtlı bir kredi kartıyla ödeme yap
+
+const createPaymentWithSavedCard = () => {
+    return Payments.createPayment({
+        locale: Iyzipay.LOCALE.TR,
+        conversationId: nanoid(),
+        price: "300",
+        paidPrice: "300",
+        currency: Iyzipay.CURRENCY.TRY,
+        installment: "1",
+        basketId: "B67JDL",
+        paymentChannel: Iyzipay.PAYMENT_CHANNEL.WEB,
+        paymentGroup: Iyzipay.PAYMENT_GROUP.PRODUCT,
+        paymentCard: {
+            cardUserKey: "GNsqxvMEP3ecW+SW2BJVqvgS5ts=",
+            cardToken: "ixB15GiHkDyLjqTEr+uq6QV4yOM="
+        },
+        buyer: {
+            id: "SDFJKL",
+            name: "John",
+            surname: "Doe",
+            gsmNumber: "+905350000000",
+            email: "email@email.com",
+            identityNumber: "743008664791",
+            lastLoginDate: "2020-10-05 12:43:35",
+            registrationDate: "2022-09-09 12:43:35",
+            registrationAddress: "Nidakule Göstepe, Merdivenkoy mah. Bora sk. No: 1",
+            ip: "85.34.78.112",
+            city: "Istanbul",
+            country: "Turkey",
+            zipCode: "34732"
+        },
+        shippingAddress: {
+            contactName: "John Doe",
+            city: "Istanbul",
+            country: "Turkey",
+            address: "Nidakule Göstepe, Merdivenkoy mah. Bora sk. No: 1",
+            zipCode: "34732"
+        },
+        billingAddress: {
+            contactName: "John Doe",
+            city: "Istanbul",
+            country: "Turkey",
+            address: "Nidakule Göstepe, Merdivenkoy mah. Bora sk. No: 1",
+            zipCode: "34732"
+        },
+        basketItems: [
+            {
+                id: "BT101",
+                name: "Samsung s20",
+                category1: "Telefonlar",
+                category2: "Android Telefonlar",
+                itemType: Iyzipay.BASKET_ITEM_TYPE.PHYSICAL,
+                price: 90
+            },
+            {
+                id: "BT102",
+                name: "Iphone 12",
+                category1: "Telefonlar",
+                category2: "iOS Telefonlar",
+                itemType: Iyzipay.BASKET_ITEM_TYPE.PHYSICAL,
+                price: 150
+            },
+            {
+                id: "BT103",
+                name: "Samsung s10",
+                category1: "Telefonlar",
+                category2: "Android Telefonlar",
+                itemType: Iyzipay.BASKET_ITEM_TYPE.PHYSICAL,
+                price: 60
+            }
+        ]
+
+    }).then((result) => {
+        console.log(result);
+        Logs.logFile("8-paments-kayıtlı-bir-kartla-odeme-al", result)
+    }).catch((err) => {
+    console.log(err);
+        Logs.logFile("8-paments-kayıtlı-bir-kartla-odeme-al-hata", err)
+    })
+}
+
+createPaymentWithSavedCard()
