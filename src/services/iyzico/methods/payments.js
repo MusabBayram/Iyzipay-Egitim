@@ -1,13 +1,13 @@
 import iyzipay from "../connection/iyzipay";
 
-export const checkInstallment = (data) => {
+export const createPayment = (data) => {
     return new Promise((resolve, reject) => {
-        iyzipay.installmentInfo.retrieve(data, (err, result) => {
+        iyzipay.payment.create(data, (err, result) => {
             if(err){
                 reject(err)
             }
             else{
-                reject(result)
+                resolve(result)
             }
         })
     })
