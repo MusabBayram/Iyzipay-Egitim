@@ -2,9 +2,11 @@ import Iyzipay from 'iyzipay';
 import * as Cards from './methods/cards';
 import * as Installments from './methods/installments';
 import * as PaymentsThreeDS from './methods/threeds-payments';
+import * as Checkouts from './methods/checkouts'
 import nanoid from '../../utils/nanoid';
 import * as Logs from '../../utils/logs';
 import  * as Payments from './methods/payments'
+import iyzipay from './connection/iyzipay';
 
 
 /* ---------------------------------------------- */
@@ -210,10 +212,10 @@ const createPayment = () => {
 
     }).then((result) => {
         console.log(result);
-        Logs.logFile("6-paments-yeni-bir-kartla-odeme-al-ve-kartı-kaydetme", result)
+        Logs.logFile("6-payments-yeni-bir-kartla-odeme-al-ve-kartı-kaydetme", result)
     }).catch((err) => {
     console.log(err);
-        Logs.logFile("6-paments-yeni-bir-kartla-odeme-al-ve-kartı-kaydetme-hata", err)
+        Logs.logFile("6-payments-yeni-bir-kartla-odeme-al-ve-kartı-kaydetme-hata", err)
     })
 }
 
@@ -300,10 +302,10 @@ const createPaymentAndSaveCard = () => {
 
     }).then((result) => {
         console.log(result);
-        Logs.logFile("7-paments-yeni-bir-kartla-odeme-al-ve-kartı-kaydet", result)
+        Logs.logFile("7-payments-yeni-bir-kartla-odeme-al-ve-kartı-kaydet", result)
     }).catch((err) => {
     console.log(err);
-        Logs.logFile("7-paments-yeni-bir-kartla-odeme-al-ve-kartı-kaydet-hata", err)
+        Logs.logFile("7-payments-yeni-bir-kartla-odeme-al-ve-kartı-kaydet-hata", err)
     })
 }
 
@@ -385,10 +387,10 @@ const createPaymentWithSavedCard = () => {
 
     }).then((result) => {
         console.log(result);
-        Logs.logFile("8-paments-kayıtlı-bir-kartla-odeme-al", result)
+        Logs.logFile("8-payments-kayıtlı-bir-kartla-odeme-al", result)
     }).catch((err) => {
     console.log(err);
-        Logs.logFile("8-paments-kayıtlı-bir-kartla-odeme-al-hata", err)
+        Logs.logFile("8-payments-kayıtlı-bir-kartla-odeme-al-hata", err)
     })
 }
 
@@ -477,10 +479,10 @@ const initializeThreeDSPayments = () => {
         ]
     }).then((result) => {
         console.log(result);        
-        Logs.logFile("9-threeds-patments-yeni-bir-kartla-odeme-al", result)
+        Logs.logFile("9-threeds-payments-yeni-bir-kartla-odeme-al", result)
     }).catch((err) => {
         console.log(err);
-        Logs.logFile("9-threeds-patments-yeni-bir-kartla-odeme-al-hata", err)
+        Logs.logFile("9-threeds-payments-yeni-bir-kartla-odeme-al-hata", err)
     })
 }
 
@@ -496,10 +498,10 @@ const completeThreeDSPayment = () => {
         conversationData: "conversation data"
     }).then((result) => {
         console.log(result);        
-        Logs.logFile("10-threeds-patments-odeme-tamamla", result)
+        Logs.logFile("10-threeds-payments-odeme-tamamla", result)
     }).catch((err) => {
         console.log(err);
-        Logs.logFile("10-threeds-patments-odeme-tamamla-hata", err)
+        Logs.logFile("10-threeds-payments-odeme-tamamla-hata", err)
     })
 }
 
@@ -580,10 +582,10 @@ const initializeThreeDSPaymentsWithRegisteredCard = () => {
         ]
     }).then((result) => {
         console.log(result);        
-        Logs.logFile("11-threeds-patments-kayıtlı-kartla-odeme-al", result)
+        Logs.logFile("11-threeds-payments-kayıtlı-kartla-odeme-al", result)
     }).catch((err) => {
         console.log(err);
-        Logs.logFile("11-threeds-patments-kayıtlı-kartla-odeme-al-hata", err)
+        Logs.logFile("11-threeds-payments-kayıtlı-kartla-odeme-al-hata", err)
     })
 }
 
@@ -669,11 +671,115 @@ const initializeThreeDSPaymentsWithNewCardAndRegister = () => {
         ]
     }).then((result) => {
         console.log(result);        
-        Logs.logFile("11-threeds-patments-kayıtlı-kartla-odeme-al", result)
+        Logs.logFile("12-threeds-payments-yeni-kart-kaydet", result)
     }).catch((err) => {
         console.log(err);
-        Logs.logFile("11-threeds-patments-kayıtlı-kartla-odeme-al-hata", err)
+        Logs.logFile("12-threeds-payments-yeni-kart-kaydet-hata", err)
     })
 }
 
 //initializeThreeDSPaymentsWithNewCardAndRegister()
+
+
+
+/* ---------------------------------------------- */
+/* f) Checkout Form                               */
+/* ---------------------------------------------- */
+
+//checkout Form içerisinde ödeme başlat
+
+const initializeCheckoutForm = () => {
+    Checkouts.initialize({
+        locale: Iyzipay.LOCALE.TR,
+        conversationId: nanoid(),
+        price: "300",
+        paidPrice: "300",
+        currency: Iyzipay.CURRENCY.TRY,
+        installment: "1",
+        basketId: "B67JDL",
+        paymentChannel: Iyzipay.PAYMENT_CHANNEL.WEB,
+        paymentGroup: Iyzipay.PAYMENT_GROUP.PRODUCT,
+        callbackUrl: "https://localhost/api/checkout/complete/payment",
+        cardUserKey: "GNsqxvMEP3ecW+SW2BJVqvgS5ts=",
+        enableInstallments: [1,2,3,6,9],
+        buyer: {
+            id: "SDFJKL",
+            name: "John",
+            surname: "Doe",
+            gsmNumber: "+905350000000",
+            email: "email@email.com",
+            identityNumber: "743008664791",
+            lastLoginDate: "2020-10-05 12:43:35",
+            registrationDate: "2022-09-09 12:43:35",
+            registrationAddress: "Nidakule Göstepe, Merdivenkoy mah. Bora sk. No: 1",
+            ip: "85.34.78.112",
+            city: "Istanbul",
+            country: "Turkey",
+            zipCode: "34732"
+        },
+        shippingAddress: {
+            contactName: "John Doe",
+            city: "Istanbul",
+            country: "Turkey",
+            address: "Nidakule Göstepe, Merdivenkoy mah. Bora sk. No: 1",
+            zipCode: "34732"
+        },
+        billingAddress: {
+            contactName: "John Doe",
+            city: "Istanbul",
+            country: "Turkey",
+            address: "Nidakule Göstepe, Merdivenkoy mah. Bora sk. No: 1",
+            zipCode: "34732"
+        },
+        basketItems: [
+            {
+                id: "BT101",
+                name: "Samsung s20",
+                category1: "Telefonlar",
+                category2: "Android Telefonlar",
+                itemType: Iyzipay.BASKET_ITEM_TYPE.PHYSICAL,
+                price: 90
+            },
+            {
+                id: "BT102",
+                name: "Iphone 12",
+                category1: "Telefonlar",
+                category2: "iOS Telefonlar",
+                itemType: Iyzipay.BASKET_ITEM_TYPE.PHYSICAL,
+                price: 150
+            },
+            {
+                id: "BT103",
+                name: "Samsung s10",
+                category1: "Telefonlar",
+                category2: "Android Telefonlar",
+                itemType: Iyzipay.BASKET_ITEM_TYPE.PHYSICAL,
+                price: 60
+            }
+        ]
+    }).then((result) => {
+        console.log(result);        
+        Logs.logFile("13-checkout-form-payments", result)
+    }).catch((err) => {
+        console.log(err);
+        Logs.logFile("13-checkout-form-payments-hata", err)
+    })
+}
+//initializeCheckoutForm()
+
+//checkout form ödeme bilgisini gösterir
+const getFormPayment = () => {
+    Checkouts.getFormPayment({
+        locale: Iyzipay.LOCALE.TR,
+        conversationId: nanoid(),
+        token: "601c8274-57a6-44c6-8b13-8339d5d2282c"
+    }).then((result) => {
+        console.log(result);        
+        Logs.logFile("14-checkout-form-payments-get-details", result)
+    }).catch((err) => {
+        console.log(err);
+        Logs.logFile("14-checkout-form-payments-get-details-hata", err)
+    })
+}
+
+getFormPayment()
