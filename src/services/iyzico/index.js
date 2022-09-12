@@ -1,6 +1,7 @@
 import Iyzipay from 'iyzipay';
 import * as Cards from './methods/cards';
 import * as Installments from './methods/installments';
+import * as PaymentsThreeDS from './methods/threeds-payments';
 import nanoid from '../../utils/nanoid';
 import * as Logs from '../../utils/logs';
 import  * as Payments from './methods/payments'
@@ -391,4 +392,288 @@ const createPaymentWithSavedCard = () => {
     })
 }
 
-createPaymentWithSavedCard()
+//createPaymentWithSavedCard()
+
+
+/* ---------------------------------------------- */
+/* e) 3D Secure Paments                           */
+/* ---------------------------------------------- */
+
+
+const initializeThreeDSPayments = () => {
+    PaymentsThreeDS.initializePayment({
+        locale: Iyzipay.LOCALE.TR,
+        conversationId: nanoid(),
+        price: "300",
+        paidPrice: "300",
+        currency: Iyzipay.CURRENCY.TRY,
+        installment: "1",
+        basketId: "B67JDL",
+        paymentChannel: Iyzipay.PAYMENT_CHANNEL.WEB,
+        paymentGroup: Iyzipay.PAYMENT_GROUP.PRODUCT,
+        callbackUrl: "https://localhost/api/payment/3ds/complete",
+        paymentCard: {
+            cardHolderName: "John Doe",
+            cardNumber: "5528790000000008",
+            expireMonth: "12",
+            expireYear: "2030",
+            cvc: '123',
+            registerCard: '0'
+        },
+        buyer: {
+            id: "SDFJKL",
+            name: "John",
+            surname: "Doe",
+            gsmNumber: "+905350000000",
+            email: "email@email.com",
+            identityNumber: "743008664791",
+            lastLoginDate: "2020-10-05 12:43:35",
+            registrationDate: "2022-09-09 12:43:35",
+            registrationAddress: "Nidakule Göstepe, Merdivenkoy mah. Bora sk. No: 1",
+            ip: "85.34.78.112",
+            city: "Istanbul",
+            country: "Turkey",
+            zipCode: "34732"
+        },
+        shippingAddress: {
+            contactName: "John Doe",
+            city: "Istanbul",
+            country: "Turkey",
+            address: "Nidakule Göstepe, Merdivenkoy mah. Bora sk. No: 1",
+            zipCode: "34732"
+        },
+        billingAddress: {
+            contactName: "John Doe",
+            city: "Istanbul",
+            country: "Turkey",
+            address: "Nidakule Göstepe, Merdivenkoy mah. Bora sk. No: 1",
+            zipCode: "34732"
+        },
+        basketItems: [
+            {
+                id: "BT101",
+                name: "Samsung s20",
+                category1: "Telefonlar",
+                category2: "Android Telefonlar",
+                itemType: Iyzipay.BASKET_ITEM_TYPE.PHYSICAL,
+                price: 90
+            },
+            {
+                id: "BT102",
+                name: "Iphone 12",
+                category1: "Telefonlar",
+                category2: "iOS Telefonlar",
+                itemType: Iyzipay.BASKET_ITEM_TYPE.PHYSICAL,
+                price: 150
+            },
+            {
+                id: "BT103",
+                name: "Samsung s10",
+                category1: "Telefonlar",
+                category2: "Android Telefonlar",
+                itemType: Iyzipay.BASKET_ITEM_TYPE.PHYSICAL,
+                price: 60
+            }
+        ]
+    }).then((result) => {
+        console.log(result);        
+        Logs.logFile("9-threeds-patments-yeni-bir-kartla-odeme-al", result)
+    }).catch((err) => {
+        console.log(err);
+        Logs.logFile("9-threeds-patments-yeni-bir-kartla-odeme-al-hata", err)
+    })
+}
+
+//initializeThreeDSPayments();
+
+//sms onayı geldikten sonra yapılacak işlemler
+
+const completeThreeDSPayment = () => {
+    PaymentsThreeDS.completePayment({
+        locale: Iyzipay.LOCALE.TR,
+        conversationId: nanoid(),
+        paymentId: "18225505",
+        conversationData: "conversation data"
+    }).then((result) => {
+        console.log(result);        
+        Logs.logFile("10-threeds-patments-odeme-tamamla", result)
+    }).catch((err) => {
+        console.log(err);
+        Logs.logFile("10-threeds-patments-odeme-tamamla-hata", err)
+    })
+}
+
+//completeThreeDSPayment()
+
+
+//kayıtlı karttan 3d ile ödeme
+const initializeThreeDSPaymentsWithRegisteredCard = () => {
+    PaymentsThreeDS.initializePayment({
+        locale: Iyzipay.LOCALE.TR,
+        conversationId: nanoid(),
+        price: "300",
+        paidPrice: "300",
+        currency: Iyzipay.CURRENCY.TRY,
+        installment: "1",
+        basketId: "B67JDL",
+        paymentChannel: Iyzipay.PAYMENT_CHANNEL.WEB,
+        paymentGroup: Iyzipay.PAYMENT_GROUP.PRODUCT,
+        callbackUrl: "https://localhost/api/payment/3ds/complete",
+        paymentCard: {
+            cardUserKey: "GNsqxvMEP3ecW+SW2BJVqvgS5ts=",
+            cardToken: "ixB15GiHkDyLjqTEr+uq6QV4yOM="
+        },
+        buyer: {
+            id: "SDFJKL",
+            name: "John",
+            surname: "Doe",
+            gsmNumber: "+905350000000",
+            email: "email@email.com",
+            identityNumber: "743008664791",
+            lastLoginDate: "2020-10-05 12:43:35",
+            registrationDate: "2022-09-09 12:43:35",
+            registrationAddress: "Nidakule Göstepe, Merdivenkoy mah. Bora sk. No: 1",
+            ip: "85.34.78.112",
+            city: "Istanbul",
+            country: "Turkey",
+            zipCode: "34732"
+        },
+        shippingAddress: {
+            contactName: "John Doe",
+            city: "Istanbul",
+            country: "Turkey",
+            address: "Nidakule Göstepe, Merdivenkoy mah. Bora sk. No: 1",
+            zipCode: "34732"
+        },
+        billingAddress: {
+            contactName: "John Doe",
+            city: "Istanbul",
+            country: "Turkey",
+            address: "Nidakule Göstepe, Merdivenkoy mah. Bora sk. No: 1",
+            zipCode: "34732"
+        },
+        basketItems: [
+            {
+                id: "BT101",
+                name: "Samsung s20",
+                category1: "Telefonlar",
+                category2: "Android Telefonlar",
+                itemType: Iyzipay.BASKET_ITEM_TYPE.PHYSICAL,
+                price: 90
+            },
+            {
+                id: "BT102",
+                name: "Iphone 12",
+                category1: "Telefonlar",
+                category2: "iOS Telefonlar",
+                itemType: Iyzipay.BASKET_ITEM_TYPE.PHYSICAL,
+                price: 150
+            },
+            {
+                id: "BT103",
+                name: "Samsung s10",
+                category1: "Telefonlar",
+                category2: "Android Telefonlar",
+                itemType: Iyzipay.BASKET_ITEM_TYPE.PHYSICAL,
+                price: 60
+            }
+        ]
+    }).then((result) => {
+        console.log(result);        
+        Logs.logFile("11-threeds-patments-kayıtlı-kartla-odeme-al", result)
+    }).catch((err) => {
+        console.log(err);
+        Logs.logFile("11-threeds-patments-kayıtlı-kartla-odeme-al-hata", err)
+    })
+}
+
+//initializeThreeDSPaymentsWithRegisteredCard()
+
+//yeni kartla 3d ödeme yap ve kartı kaydet
+const initializeThreeDSPaymentsWithNewCardAndRegister = () => {
+    PaymentsThreeDS.initializePayment({
+        locale: Iyzipay.LOCALE.TR,
+        conversationId: nanoid(),
+        price: "300",
+        paidPrice: "300",
+        currency: Iyzipay.CURRENCY.TRY,
+        installment: "1",
+        basketId: "B67JDL",
+        paymentChannel: Iyzipay.PAYMENT_CHANNEL.WEB,
+        paymentGroup: Iyzipay.PAYMENT_GROUP.PRODUCT,
+        callbackUrl: "https://localhost/api/payment/3ds/complete",
+        paymentCard: {
+            cardUserKey: "GNsqxvMEP3ecW+SW2BJVqvgS5ts=",
+            cardAlias: "Kredi Kartım 3D",
+            cardHolderName: "John Doe",
+            cardNumber: "5528790000000008",
+            expireMonth: "12",
+            expireYear: "2030",
+            cvc: '123',
+            registerCard: '1'
+        },
+        buyer: {
+            id: "SDFJKL",
+            name: "John",
+            surname: "Doe",
+            gsmNumber: "+905350000000",
+            email: "email@email.com",
+            identityNumber: "743008664791",
+            lastLoginDate: "2020-10-05 12:43:35",
+            registrationDate: "2022-09-09 12:43:35",
+            registrationAddress: "Nidakule Göstepe, Merdivenkoy mah. Bora sk. No: 1",
+            ip: "85.34.78.112",
+            city: "Istanbul",
+            country: "Turkey",
+            zipCode: "34732"
+        },
+        shippingAddress: {
+            contactName: "John Doe",
+            city: "Istanbul",
+            country: "Turkey",
+            address: "Nidakule Göstepe, Merdivenkoy mah. Bora sk. No: 1",
+            zipCode: "34732"
+        },
+        billingAddress: {
+            contactName: "John Doe",
+            city: "Istanbul",
+            country: "Turkey",
+            address: "Nidakule Göstepe, Merdivenkoy mah. Bora sk. No: 1",
+            zipCode: "34732"
+        },
+        basketItems: [
+            {
+                id: "BT101",
+                name: "Samsung s20",
+                category1: "Telefonlar",
+                category2: "Android Telefonlar",
+                itemType: Iyzipay.BASKET_ITEM_TYPE.PHYSICAL,
+                price: 90
+            },
+            {
+                id: "BT102",
+                name: "Iphone 12",
+                category1: "Telefonlar",
+                category2: "iOS Telefonlar",
+                itemType: Iyzipay.BASKET_ITEM_TYPE.PHYSICAL,
+                price: 150
+            },
+            {
+                id: "BT103",
+                name: "Samsung s10",
+                category1: "Telefonlar",
+                category2: "Android Telefonlar",
+                itemType: Iyzipay.BASKET_ITEM_TYPE.PHYSICAL,
+                price: 60
+            }
+        ]
+    }).then((result) => {
+        console.log(result);        
+        Logs.logFile("11-threeds-patments-kayıtlı-kartla-odeme-al", result)
+    }).catch((err) => {
+        console.log(err);
+        Logs.logFile("11-threeds-patments-kayıtlı-kartla-odeme-al-hata", err)
+    })
+}
+
+//initializeThreeDSPaymentsWithNewCardAndRegister()
