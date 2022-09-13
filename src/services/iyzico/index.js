@@ -3,10 +3,10 @@ import * as Cards from './methods/cards';
 import * as Installments from './methods/installments';
 import * as PaymentsThreeDS from './methods/threeds-payments';
 import * as Checkouts from './methods/checkouts'
+import * as CancelPayments from './methods/cancel-payments';
 import nanoid from '../../utils/nanoid';
 import * as Logs from '../../utils/logs';
 import  * as Payments from './methods/payments'
-import iyzipay from './connection/iyzipay';
 
 
 /* ---------------------------------------------- */
@@ -782,4 +782,46 @@ const getFormPayment = () => {
     })
 }
 
-getFormPayment()
+//getFormPayment()
+
+
+/* ---------------------------------------------- */
+/* g) Cancel Payments                             */
+/* ---------------------------------------------- */
+
+//ödeme ipal etme testi
+const cancelPayments = () => {
+    CancelPayments.cancelPayments({
+        locale: Iyzipay.LOCALE.TR,
+        conversationId: nanoid(),
+        paymentId: "18217734",
+        ip: "85.34.78.122"
+    }).then((result) => {
+        console.log(result);        
+        Logs.logFile("15-cancel-payments", result)
+    }).catch((err) => {
+        console.log(err);
+        Logs.logFile("15-cancel-payments-hata", err)
+    })
+}
+//cancelPayments()
+
+//Açıklama ile ödeme ipal etme testi
+const cancelPaymentsWithReason = () => {
+    CancelPayments.cancelPayments({
+        locale: Iyzipay.LOCALE.TR,
+        conversationId: nanoid(),
+        paymentId: "18217734",
+        ip: "85.34.78.122",
+        reason: Iyzipay.REFUND_REASON.BUYER_REQUEST,
+        description: "Kullanıcı isteği ile iptal edildi"
+    }).then((result) => {
+        console.log(result);        
+        Logs.logFile("16-cancel-payments-reason", result)
+    }).catch((err) => {
+        console.log(err);
+        Logs.logFile("16-cancel-payments-reason-hata", err)
+    })
+}
+
+cancelPaymentsWithReason()
