@@ -4,6 +4,7 @@ import * as Installments from './methods/installments';
 import * as PaymentsThreeDS from './methods/threeds-payments';
 import * as Checkouts from './methods/checkouts'
 import * as CancelPayments from './methods/cancel-payments';
+import * as RefundPayments from './methods/refund-payments';
 import nanoid from '../../utils/nanoid';
 import * as Logs from '../../utils/logs';
 import  * as Payments from './methods/payments'
@@ -824,4 +825,53 @@ const cancelPaymentsWithReason = () => {
     })
 }
 
-cancelPaymentsWithReason()
+//cancelPaymentsWithReason()
+
+
+/* ---------------------------------------------- */
+/* h) Refund Payment                              */
+/* ---------------------------------------------- */
+
+const refundPayment = () => {
+    RefundPayments.refundPayments({
+        locale: Iyzipay.LOCALE.TR,
+        conversationId: nanoid(),
+        paymentTransactionId: "19440140",
+        price: "50",
+        currency: Iyzipay.CURRENCY.TRY,
+        ip: "85.34.78.112",
+    }).then((result) => {
+        console.log(result);        
+        Logs.logFile("17-refund-payments", result)
+    }).catch((err) => {
+        console.log(err);
+        Logs.logFile("17-refund-payments-hata", err)
+    })
+}
+
+refundPayment()
+
+// Ödemenin bir kısmını neden ve açıklama ile iade et
+
+const refundPaymentWithReason = () => {
+    RefundPayments.refundPayments({
+        locale: Iyzipay.LOCALE.TR,
+        conversationId: nanoid(),
+        paymentTransactionId: "19440140",
+        price: "50",
+        currency: Iyzipay.CURRENCY.TRY,
+        ip: "85.34.78.112",
+        reason: Iyzipay.REFUND_REASON.BUYER_REQUEST,
+        description: "Kullanıcı iade istedi"
+    }).then((result) => {
+        console.log(result);        
+        Logs.logFile("17-refund-payments", result)
+    }).catch((err) => {
+        console.log(err);
+        Logs.logFile("17-refund-payments-hata", err)
+    })
+}
+
+
+//createPayment()
+refundPaymentWithReason()
