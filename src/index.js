@@ -1,11 +1,10 @@
-import { logFile } from "./utils/logs";
-import nanoid from "./utils/nanoid";
+import dotenv from 'dotenv';
+import config from './config';
 
-logFile("test1",{
-    test: 2,
-    name: "feza"
+const envPath = config?.production?"./env/.prod":"./env/.dev"
+
+dotenv.config({
+    path: envPath
 })
 
-const id = nanoid();
-
-console.log(id);
+console.log(process.env.DEPLOYMENT);
