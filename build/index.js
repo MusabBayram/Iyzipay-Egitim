@@ -1,14 +1,16 @@
 "use strict";
 
-var _logs = require("./utils/logs");
+var _dotenv = _interopRequireDefault(require("dotenv"));
 
-var _nanoid = _interopRequireDefault(require("./utils/nanoid"));
+var _config = _interopRequireDefault(require("./config"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-(0, _logs.logFile)("test1", {
-  test: 2,
-  name: "feza"
+const envPath = _config.default?.production ? "./env/.prod" : "./env/.dev";
+
+_dotenv.default.config({
+  path: envPath
 });
-const id = (0, _nanoid.default)();
-console.log(id);
+
+console.log(process.env.DEPLOYMENT);
+console.log(process.env.HTTPS_ENABLED);

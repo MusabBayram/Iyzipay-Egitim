@@ -8,3 +8,4 @@ dotenv.config({
 })
 
 console.log(process.env.DEPLOYMENT);
+console.log(process.env.HTTPS_ENABLED);

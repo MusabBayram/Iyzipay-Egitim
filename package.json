@@ -5,8 +5,9 @@
   "main": "index.js",
   "scripts": {
     "start": "npx @babel/node",
-    "dev": "babel src --out-dir=./build --copy-files --watch",
-    "build": "babel src --out-dir=./build --copy-files",
+    "dev": "npx nodemon --exec npx @babel/node ./src/index.js dev --watch",
+    "build": "npx babel src --out-dir=./build --copy-files",
+    "production": "npm run build && node ./build/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
