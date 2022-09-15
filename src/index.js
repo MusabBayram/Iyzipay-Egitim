@@ -3,6 +3,10 @@ import config from './config';
 import express from 'express';
 import logger from 'morgan';
 
+import https from 'https';
+import fs from 'fs';
+import path from 'path';
+
 const envPath = config?.production?"./env/.prod":"./env/.dev"
 
 dotenv.config({
@@ -19,6 +23,22 @@ app.use(express.json({
 
 app.use(express.urlencoded({extended:true}))
 
-app.listen(process.env.PORT, () => {
-    console.log("Express Uygulamamız " + process.env.PORT + " üzerinden çalışmaktadır");
-})
+
+if(process.env.HTTPS_ENABLED === "true") {
+    const key = fs.readFileSync(path.join(__dirname, "./certs/key.pem")).toString();
+    const cert = fs.readFileSync(path.join(__dirname, "./certs/cert.pem")).toString();
+
+    const server = https.createServer({
+        key: key,
+        cert: cert
+    }, app);
+
+    server.listen(process.env.PORT, () => {
+        console.log("Express Uygulamamız " + process.env.PORT + " üzerinden çalışmaktadır");        
+    })
+}
+else {
+    app.listen(process.env.PORT, () => {
+        console.log("Express Uygulamamız " + process.env.PORT + " üzerinden çalışmaktadır");
+    })
+}
