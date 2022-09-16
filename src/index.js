@@ -1,11 +1,13 @@
+import 'express-async-errors';
 import dotenv from 'dotenv';
 import config from './config';
-import express from 'express';
+import express, { application } from 'express';
 import logger from 'morgan';
-
 import https from 'https';
 import fs from 'fs';
 import path from 'path';
+import GenericErrorHandler from './middlewares/GenericErrorHandler';
+import ApiError from './error/ApiError';
 
 const envPath = config?.production?"./env/.prod":"./env/.dev"
 
@@ -22,6 +24,15 @@ app.use(express.json({
 }));
 
 app.use(express.urlencoded({extended:true}))
+
+app.use("/", (req, res) => {
+    throw new ApiError("Bir hata oluştu", 404, "somethingWrong")
+    res.json({
+        test: 1
+    })
+})
+
+application.use(GenericErrorHandler);
 
 
 if(process.env.HTTPS_ENABLED === "true") {
