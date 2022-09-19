@@ -6,6 +6,9 @@ import logger from 'morgan';
 import https from 'https';
 import fs from 'fs';
 import path from 'path';
+import helmet from 'helmet';
+import cors from 'cors';
+
 import GenericErrorHandler from './middlewares/GenericErrorHandler';
 import ApiError from './error/ApiError';
 
@@ -18,6 +21,11 @@ dotenv.config({
 const app = express();
 
 app.use(logger(process.env.LOGGER))
+
+app.use(helmet());
+app.use(cors({
+    origin: "*"
+}))
 
 app.use(express.json({
     limit: "1mb"

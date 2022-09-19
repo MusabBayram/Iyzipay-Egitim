@@ -2,7 +2,7 @@ import ApiError from "../error/ApiError";
 
 const GenericErrorHandler = (err, req, res, next) => {
     if(!(err instanceof ApiError)) {
-        console.error(err)
+        console.error(err);
     }
     if(/\w+ validation failed: \w+/i.test(err.message)) {
         err.message = err.message.replace(/\w+ validation failed: \w+/i, "")
