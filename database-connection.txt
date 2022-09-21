@@ -1,0 +1,4 @@
+payment-system-backend
+2nn8CUBJ4n5O3tJO
+
+mongodb+srv://payment-system-backend:2nn8CUBJ4n5O3tJO@cluster0.wod4tg5.mongodb.net/payment-system?retryWrites=true&w=majority
