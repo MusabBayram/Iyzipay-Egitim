@@ -90,6 +90,6 @@ const PaymentSuccessSchema = new Schema({
     }
 })
 
-const PaymentSuccess = mongoose.model("PaymentsSuccess", PaymentSuccessSchema);
+const PaymentsSuccess = mongoose.model("PaymentsSuccess", PaymentSuccessSchema);
 
-export default PaymentSuccess;
+export default PaymentsSuccess;
