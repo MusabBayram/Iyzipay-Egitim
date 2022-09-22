@@ -14,46 +14,46 @@ const UserSchema = new Schema({
         type: String,
         default: nanoid(),
         unique: true,
-        require: true
+        required: true
     },
     locale:{
         type: String,
-        require: true,
+        required: true,
         default: "tr",
         enum: ["tr", "en"]
     },
     role:{
         type: String,
-        require: true,
+        required: true,
         default: "user",
         enum: ["user", "admin"]
     },
     name:{
         type: String,
-        require: true
+        required: true
     },
     surname:{
         type: String,
-        require: true
+        required: true
     },
     email:{
         type: String,
-        require: true,
+        required: true,
         unique: true
     },
     phoneNumber:{
         type: String,
-        require: true,
+        required: true,
         unique: true
     },
     identityNumber:{
         type: String,
-        require: true,
+        required: true,
         default: "00000000000"
     },
     password:{
         type: String,
-        require: true
+        required: true
     },
     avatarUrl:{
         type: String
@@ -61,33 +61,33 @@ const UserSchema = new Schema({
     avatarColor:{
         type: String,
         default: randomColorGenerator(),
-        require: true
+        required: true
     },
     address:{
         type: String,
-        require: true
+        required: true
     },
     city:{
         type: String,
-        require: true
+        required: true
     },
     country:{
         type: String,
-        require: true,
+        required: true,
         default: "Turkey"
     },
     zipCode:{
         type: String,
-        require: true
+        required: true
     },
     ip:{
         type: String,
-        require: true,
+        required: true,
         default: "85.34.78.112"
     },
     cardUserKey:{
         type: String,
-        require: false,
+        required: false,
         unique: true
     }
 }, {
