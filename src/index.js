@@ -40,7 +40,7 @@ app.use("/", (req, res) => {
     })
 })
 
-application.use(GenericErrorHandler);
+app.use(GenericErrorHandler);
 
 
 if(process.env.HTTPS_ENABLED === "true") {
