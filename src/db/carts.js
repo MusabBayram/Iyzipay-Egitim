@@ -86,6 +86,8 @@ Carts.populationTest = async () => {
     console.log(cart);
 }
 
-Carts.initializer();
+Carts.initializer().then(async res => {
+    await Carts.populationTest()
+});
 
-export default Products
+export default Carts;
