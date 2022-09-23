@@ -9,7 +9,7 @@ const randomColorGenerator = () => {
     return Math.floor(Math.random() * 16777215).toString(16)
 }
 
-const UserSchema = new Schema({
+const UsersSchema = new Schema({
     uid:{
         type: String,
         default: nanoid(),
@@ -105,7 +105,7 @@ const UserSchema = new Schema({
     }
 })
 
-UserSchema.pre("save", async function(next){
+UsersSchema.pre("save", async function(next){
     try {
         this.password = await bcrypt.hash(this.password, 10);
         return next()
@@ -116,7 +116,7 @@ UserSchema.pre("save", async function(next){
     next()
 })
 
-const Users = mongoose.model("Users", UserSchema);
+const Users = mongoose.model("Users", UsersSchema);
 
 Users.starterData = [
     {
