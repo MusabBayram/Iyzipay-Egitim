@@ -8,7 +8,7 @@ import fs from 'fs';
 import path from 'path';
 import helmet from 'helmet';
 import cors from 'cors';
-
+import DBModels from './db'
 import GenericErrorHandler from './middlewares/GenericErrorHandler';
 import ApiError from './error/ApiError';
 
