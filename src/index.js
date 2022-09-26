@@ -9,6 +9,7 @@ import path from 'path';
 import helmet from 'helmet';
 import cors from 'cors';
 import mongoose from 'mongoose';
+import passport from 'passport';
 import DBModels from './db'
 import GenericErrorHandler from './middlewares/GenericErrorHandler';
 import ApiError from './error/ApiError';
@@ -44,6 +45,16 @@ app.use(express.json({
 }));
 
 app.use(express.urlencoded({extended:true}))
+
+passport.serializeUser((user, done) => {
+    done(null, user);
+});
+
+passport.deserializeUser((id, done) => {
+    done(null, id)
+});
+
+app.use(passport.initialize())
 
 app.use("/", (req, res) => {
     throw new ApiError("Bir hata oluştu", 404, "somethingWrong")
