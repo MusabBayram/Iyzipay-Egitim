@@ -10,9 +10,11 @@ import helmet from 'helmet';
 import cors from 'cors';
 import mongoose from 'mongoose';
 import passport from 'passport';
+import { ExtractJwt, Strategy as JwtStrategy } from 'passport-jwt';
 import DBModels from './db'
 import GenericErrorHandler from './middlewares/GenericErrorHandler';
 import ApiError from './error/ApiError';
+import Users from './db/users';
 
 const envPath = config?.production?"./env/.prod":"./env/.dev"
 
@@ -55,6 +57,31 @@ passport.deserializeUser((id, done) => {
 });
 
 app.use(passport.initialize())
+
+const jwtOpts = {
+    jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+    secretOrKey: process.env.JWT_SECRET
+}
+
+passport.use(
+    new JwtStrategy(
+        jwtOpts,
+        async (jwtPayload, done) => {
+            try {
+                const user = await Users.findOne({_id: jwtPayload._id});
+                if (user) {
+                    done(null, user.toJSON())
+                } 
+                else {
+                    done(new ApiError("Autorization is not valid", 401, "authorizationInvalid"), false);
+                }
+            } 
+            catch (err) {
+                return done(err, false)
+            }
+        }
+    )
+)
 
 app.use("/", (req, res) => {
     throw new ApiError("Bir hata oluştu", 404, "somethingWrong")
