@@ -3,3 +3,4 @@ HTTPS_ENABLED = true
 PORT = 443
 LOGGER = dev
 MONGO_URI = mongodb+srv://payment-system-backend:2nn8CUBJ4n5O3tJO@cluster0.wod4tg5.mongodb.net/payments-system-development?retryWrites=true&w=majority
+JWT_SECRET = sdfASfDdFVdbSDShbAsdasbFASDadfbh_sdfv
