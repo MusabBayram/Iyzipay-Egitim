@@ -14,6 +14,7 @@ import { ExtractJwt, Strategy as JwtStrategy } from 'passport-jwt';
 import DBModels from './db'
 import GenericErrorHandler from './middlewares/GenericErrorHandler';
 import ApiError from './error/ApiError';
+import Session from './middlewares/Session';
 import Users from './db/users';
 
 const envPath = config?.production?"./env/.prod":"./env/.dev"
@@ -83,10 +84,16 @@ passport.use(
     )
 )
 
-app.use("/", (req, res) => {
-    throw new ApiError("Bir hata oluştu", 404, "somethingWrong")
+// app.use("/", (req, res) => {
+//     throw new ApiError("Bir hata oluştu", 404, "somethingWrong")
+//     res.json({
+//         test: 1
+//     })
+// })
+
+app.all("/test-auth", Session, (req,res) =>{
     res.json({
-        test: 1
+        test: true
     })
 })
 
