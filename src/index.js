@@ -16,6 +16,7 @@ import GenericErrorHandler from './middlewares/GenericErrorHandler';
 import ApiError from './error/ApiError';
 import Session from './middlewares/Session';
 import Users from './db/users';
+import routes from './routes';
 
 const envPath = config?.production?"./env/.prod":"./env/.dev"
 
@@ -35,6 +36,13 @@ mongoose.connect(process.env.MONGO_URI, {
 //END MONGODB CONNECTION
 
 const app = express();
+const router = express.Router()
+
+routes.forEach((routeFn, index) => {
+    routeFn(router)
+})
+
+app.use("/api", router)
 
 app.use(logger(process.env.LOGGER))
 
