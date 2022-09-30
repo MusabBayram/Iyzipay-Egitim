@@ -101,7 +101,7 @@ passport.use(
 
 app.all("/test-auth", Session, (req,res) =>{
     res.json({
-        test: true 
+        test: true
     })
 })
 
