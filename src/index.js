@@ -103,7 +103,7 @@ app.all("/test-auth", Session, (req,res) =>{
     res.json({
         test: true
     })
-}) 
+})
 
 app.use(GenericErrorHandler);
 
