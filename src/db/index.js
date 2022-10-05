@@ -1,6 +1,6 @@
 import Users from './users';
 import Products from './products';
-import Carts from './carts';
+import Cards from './cards';
 import PaymentSuccess from './payment-success';
 import PaymentFailed from './payment-failed';
 
@@ -8,7 +8,7 @@ import PaymentFailed from './payment-failed';
 export default [
     Users,
     Products,
-    Carts,
+    Cards,
     PaymentSuccess,
     PaymentFailed
 ]

@@ -5,7 +5,7 @@ import Products from './products';
 const { Schema } = mongoose;
 const { ObjectId } = Schema.Types;
 
-const CartsSchema = new Schema({
+const CardsSchema = new Schema({
     uid:{
         type: String,
         default: nanoid(),
@@ -35,7 +35,7 @@ const CartsSchema = new Schema({
     },
 },{
     _id:true,
-    collection: "carts",
+    collection: "cards",
     timestamps: true,
     toJSON:{
         transform: (doc, ret) => {
@@ -47,9 +47,9 @@ const CartsSchema = new Schema({
     }
 })
 
-const Carts = mongoose.model("Carts", CartsSchema);
+const Cards = mongoose.model("Cards", CardsSchema);
 
-Carts.starterData = {
+Cards.starterData = {
     _id: mongoose.Types.ObjectId('61d05524bf858c7449e9d456'),
     buyer: new mongoose.Types.ObjectId('61d054de0d8af19519e88a61'),
     completed: false,
@@ -61,18 +61,18 @@ Carts.starterData = {
     currency: 'TRY'
 }
 
-Carts.initializer = async() => {
-    const count = await Carts.estimatedDocumentCount();
+Cards.initializer = async() => {
+    const count = await Cards.estimatedDocumentCount();
     if(count === 0){
-        const created = await Carts.create(Carts.starterData)
-        console.log(`${created.length} Carts created`);
-        console.log(Carts.starterData);
+        const created = await Cards.create(Cards.starterData)
+        console.log(`${created.length} Cards created`);
+        console.log(Cards.starterData);
     }
 }
 
-Carts.populationTest = async () => {
-    const cart = await Carts.findOne({
-        _id: Carts.starterData._id
+Cards.populationTest = async () => {
+    const cart = await Cards.findOne({
+        _id: Cards.starterData._id
     }).populate('products', {
         name: 1,
         price: 1,
@@ -86,10 +86,10 @@ Carts.populationTest = async () => {
     console.log(cart);
 }
 
-// Carts.initializer().then(async res => {
-//     await Carts.populationTest()
+// Cards.initializer().then(async res => {
+//     await Cards.populationTest()
 // });
 
-Carts.populationTest()
+Cards.populationTest()
 
-export default Carts;
+export default Cards;
