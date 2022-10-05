@@ -78,7 +78,7 @@ passport.use(
                 else {
                     done(new ApiError("Autorization is not valid", 401, "authorizationInvalid"), false);
                 }
-            } 
+            }
             catch (err) {
                 return done(err, false)
             }
