@@ -42,7 +42,7 @@ const PaymentSuccessSchema = new Schema({
         required: true,
         enum: ["success"]
     },
-    cartId:{
+    cardId:{
         type: ObjectId,
         ref: "Cards",
         required: true
