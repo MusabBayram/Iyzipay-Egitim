@@ -18,5 +18,14 @@ export default (router) => {
             },
             card: card
          })
+         if(!req.user.cardUserKey){
+            if(result?.status === "success" && result?.cardUserKey){
+                const user = await Users.findOne({
+                    _id: req.user?._id
+                });
+                user.cardUserKey = result?.cardUserKey;
+                await user.save()
+            }
+         }
     })
 }
