@@ -71,7 +71,7 @@ Cards.initializer = async() => {
 }
 
 Cards.populationTest = async () => {
-    const cart = await Cards.findOne({
+    const card = await Cards.findOne({
         _id: Cards.starterData._id
     }).populate('products', {
         name: 1,
@@ -83,7 +83,7 @@ Cards.populationTest = async () => {
         stock: 1,
         itemType: 1
     }).populate('buyer');
-    console.log(cart);
+    console.log(card);
 }
 
 // Cards.initializer().then(async res => {
