@@ -8,15 +8,9 @@ export default (router) => {
     // Kart Ekleme
     router.post("/cards", Session, async(req,res) => {
          const { card } = req.body;
-         let result = await Cards.createUserCard({
-            locale: req.user.locale,
-            conversationId: nanoid(),
-            email: req.user.email,
-            externalId: nanoid(),
-            ...req.user?.cardUserKey && {
-                cardUserKey: req.user.cardUserKey
-            },
-            card: card
+         console.log(card);
+         res.json({
+            test: 1
          })
          if(!req.user.cardUserKey){
             if(result?.status === "success" && result?.cardUserKey){
