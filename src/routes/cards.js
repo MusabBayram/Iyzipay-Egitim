@@ -27,6 +27,5 @@ export default (router) => {
                 await user.save()
             }
          }
-         res.json(result)
     })
 }
