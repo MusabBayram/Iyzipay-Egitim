@@ -160,7 +160,7 @@
 					"response": []
 				},
 				{
-					"name": "Check Installments with Card Id",
+					"name": "Check Installments with Cart Id",
 					"request": {
 						"method": "POST",
 						"header": [],
