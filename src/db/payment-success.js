@@ -44,7 +44,7 @@ const PaymentSuccessSchema = new Schema({
     },
     cartId:{
         type: ObjectId,
-        ref: "Cards",
+        ref: "Carts",
         required: true
     },
     conversationId:{
