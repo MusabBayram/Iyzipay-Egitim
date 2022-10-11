@@ -10,6 +10,7 @@ const { ObjectId } = Types;
 
 export default (router) => {
     router.post("/installments", Session, async (req, res) => {
+        
         const {binNumber, price} = req.body;
         if(!binNumber || !price){
             throw new ApiError("Missing Parameters", 400, "missingParameters")
