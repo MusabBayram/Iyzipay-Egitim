@@ -43,4 +43,19 @@ export default (router) => {
 
         res.status(200).json(cards);
     })
+
+    //KART SİLME
+    router.delete("/cards/delete-by-token", Session, async (req, res) => {
+        const {cardToken} = req. body;
+        if(!cardToken){
+            throw new ApiError("Card token is required", 400, "cardTokenRequired");
+        }
+        let deleteResult = await Cards.deleteUserCard({
+            locale: req.user.locale,
+            conversationId: nanoid(),
+            cardUserKey: req.user?.cardUserKey,
+            cardToken: cardToken
+        })
+        res.status(200).json(deleteResult)
+    })
 }
