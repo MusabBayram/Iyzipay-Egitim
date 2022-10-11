@@ -73,6 +73,13 @@ export default (router) => {
         if(index >= cards?.cardDetails.length){
             throw new ApiError("Card doesn't exists, check index number", 400, "cardIndexInvalid")
         }
-        res.json(cards)
+        const {cardToken} = cards?.cardDetails[index]
+        let deleteResult = await Cards.deleteUserCard({
+            locale: req.user.locale,
+            conversationId: nanoid(),
+            cardUserKey: req.user?.cardUserKey,
+            cardToken: cardToken
+        })
+        res.json(deleteResult)
     })
 }
