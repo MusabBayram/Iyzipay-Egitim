@@ -44,7 +44,7 @@ export default (router) => {
         res.status(200).json(cards);
     })
 
-    //KART SİLME
+    //KART SİLME Token
     router.delete("/cards/delete-by-token", Session, async (req, res) => {
         const {cardToken} = req. body;
         if(!cardToken){
@@ -57,5 +57,22 @@ export default (router) => {
             cardToken: cardToken
         })
         res.status(200).json(deleteResult)
+    })
+
+    //KART SİLME Index
+    router.delete("/cards/:cardIndex/delete-by-index", Session, async (req, res) => {
+        if(!req.params?.cardIndex){
+            throw new ApiError("Card index is required", 400, "cardIndexRequired");
+        }
+        let cards = await Cards.getUserCards({
+            locale: req.user.locale,
+            conversationId: nanoid(),
+            cardUserKey: req.user?.cardUserKey,
+        })
+        const index = parseInt(req.params?.cardIndex);
+        if(index >= cards?.cardDetails.length){
+            throw new ApiError("Card doesn't exists, check index number", 400, "cardIndexInvalid")
+        }
+        res.json(cards)
     })
 }
