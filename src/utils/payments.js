@@ -10,5 +10,22 @@ export const CompletePayment = async (result) => {
         await Carts.updateOne({_id:ObjectId(result?.basketId)}, {$set:{
             completed: true
         }})
+        await PaymentsSuccess.create({
+            status: result.status,
+            cartId: result?.basketId,
+            conversationId: result?.conversationId,
+            currency: result?.currency,
+            paymentId: result?.paymentId,
+            price: result?.price,
+            paidPrice: result?.paidPrice,
+            ItemTransactions: result?.ItemTransactions.map(item =>{
+                return{
+                    itemId: item?.itemId,
+                    paymentTransactionId: item?.paymentTransactionId,
+                    price: item?.price,
+                    paidPrice: item?.paidPrice
+                }
+            })
+        })
     }
 }
