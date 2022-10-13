@@ -80,11 +80,10 @@ export default (router) => {
                 }
             })
         }
-        console.log(data);
-        res.json({
-            test: 1
-        })
-        //let result = await Payments.createPayment(data);
 
+        let result = await Payments.createPayment(data);
+        await CompletePayment(result);
+        res.json(result);
+    
     })
 }
