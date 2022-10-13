@@ -7,6 +7,7 @@ import * as Payments from "../services/iyzico/methods/payments";
 import * as Cards from "../services/iyzico/methods/cards";
 import nanoid from "../utils/nanoid";
 import { CompletePayment } from "../utils/payments";
+import Iyzipay from "iyzipay";
 
 export default (router) => {
     // YENİ BİR KARTLA ÖDEME OLUŞTUR VE KARTI KAYDETME
@@ -53,9 +54,37 @@ export default (router) => {
                 city: req.user?.city,
                 country: req.user?.country,
                 zipCode: req.user?.zipCode
-            }
+            },
+            shippingAddress:{
+                contactName: req.user?.name+" "+req.user?.surname,
+                city: req.user?.city,
+                country: req.user?.country,
+                address: req.user?.address,
+                zipCode: req.user?.zipCode
+            },
+            billingAddress:{
+                contactName: req.user?.name+" "+req.user?.surname,
+                city: req.user?.city,
+                country: req.user?.country,
+                address: req.user?.address,
+                zipCode: req.user?.zipCode
+            },
+            basketItems: cart.products.map((product, index) => {
+                return {
+                    id: String(product?._id),
+                    name: product?.name,
+                    category1: product?.categories[0],
+                    category2: product?.categories[1],
+                    itemType: Iyzipay.BASKET_ITEM_TYPE[product?.itemType],
+                    price: product?.price
+                }
+            })
         }
-
+        console.log(data);
+        res.json({
+            test: 1
+        })
+        //let result = await Payments.createPayment(data);
 
     })
 }
