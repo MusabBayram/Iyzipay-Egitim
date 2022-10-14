@@ -21,7 +21,7 @@ export const CompletePayment = async (result) => {
             itemTransactions: result?.itemTransactions.map(item =>{
                 return{
                     itemId: item?.itemId,
-                    paymentTransactionId: item?.paymentTransactionId, 
+                    paymentTransactionId: item?.paymentTransactionId,
                     price: item?.price,
                     paidPrice: item?.paidPrice
                 }
