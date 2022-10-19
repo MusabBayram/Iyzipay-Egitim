@@ -188,7 +188,7 @@ export default (router) => {
         if(index >= cards?.cardDetails?.length) {            
             throw new ApiError("Card doesn't exists", 400, "cardIndexInvalid")
         }
-        const {cardToken} = cards?.cardDetails[index]
+        const { cardToken } = cards?.cardDetails[index]
 
         if(!req.params?.cartId) {
             throw new ApiError("Card id is required", 400, "cardIdRequired")
