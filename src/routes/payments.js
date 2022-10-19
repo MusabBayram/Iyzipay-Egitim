@@ -171,7 +171,7 @@ export default (router) => {
     
     })
     // VAR OLAN BİR KARTLA ÖDEME OLUŞTUR VE KARTI KAYDETME
-    router.post("/payments/:cartId/:cartIndex/with-registered-card-index", Session, async (req,res) => {
+    router.post("/payments/:cartId/:cardIndex/with-registered-card-index", Session, async (req,res) => {
         let { cardIndex } = req.params;
         if(!cardIndex) {
             throw new ApiError("Card index is required", 400, "cardIndexRequired")
@@ -179,7 +179,7 @@ export default (router) => {
         if(!req.user?.cardUser) {
             throw new ApiError("No registred card available", 400, "cardUserKeyRequired")
         }
-        const card = await Cards.getUserCards({            
+        const cards = await Cards.getUserCards({            
             locale: req.user.locale,
             conversationId: nanoid(),
             cardUserKey: req.user?.cardUserKey
@@ -203,6 +203,10 @@ export default (router) => {
 
         const paidPrice = cart.products.map((product) => product.price).reduce((a,b) => a+b, 0);
 
+        const card = {
+            cardToken,
+            cardUserKey: req.user?.cardUserKey
+        }
         const data = {
             locale: req.user.locale,
             conversationId: nanoid(),
