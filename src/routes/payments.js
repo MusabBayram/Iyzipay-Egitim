@@ -176,7 +176,7 @@ export default (router) => {
         if(!cardIndex) {
             throw new ApiError("Card index is required", 400, "cardIndexRequired")
         }
-        if(!req.user?.cardUser) {
+        if(!req.user?.cardUserKey) {
             throw new ApiError("No registred card available", 400, "cardUserKeyRequired")
         }
         const cards = await Cards.getUserCards({            
@@ -185,7 +185,7 @@ export default (router) => {
             cardUserKey: req.user?.cardUserKey
         })
         const index = parseInt(cardIndex);
-        if(index >= cards?.cardDetails?.lenght) {            
+        if(index >= cards?.cardDetails?.length) {            
             throw new ApiError("Card doesn't exists", 400, "cardIndexInvalid")
         }
         const {cardToken} = cards?.cardDetails[index]
