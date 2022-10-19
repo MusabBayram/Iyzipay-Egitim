@@ -172,9 +172,12 @@ export default (router) => {
     })
     // VAR OLAN BİR KARTLA ÖDEME OLUŞTUR VE KARTI KAYDETME
     router.post("/payments/:cartId/:cartIndex/with-registered-card-index", Session, async (req,res) => {
-        const { card } = req.body;
-        if(!card) {
-            throw new ApiError("Card is required", 400, "cardRequired")
+        let { cardIndex } = req.params;
+        if(!cardIndex) {
+            throw new ApiError("Card index is required", 400, "cardIndexRequired")
+        }
+        if(!req.user?.cardUser) {
+            throw new ApiError("No registred card available", 400, "cardUserKeyRequired")
         }
         if(!req.params?.cartId) {
             throw new ApiError("Card id is required", 400, "cardIdRequired")
