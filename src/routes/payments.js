@@ -179,6 +179,17 @@ export default (router) => {
         if(!req.user?.cardUser) {
             throw new ApiError("No registred card available", 400, "cardUserKeyRequired")
         }
+        const card = await Cards.getUserCards({            
+            locale: req.user.locale,
+            conversationId: nanoid(),
+            cardUserKey: req.user?.cardUserKey
+        })
+        const index = parseInt(cardIndex);
+        if(index >= cards?.cardDetails?.lenght) {            
+            throw new ApiError("Card doesn't exists", 400, "cardIndexInvalid")
+        }
+        const {cardToken} = cards?.cardDetails[index]
+
         if(!req.params?.cartId) {
             throw new ApiError("Card id is required", 400, "cardIdRequired")
         }
@@ -189,7 +200,7 @@ export default (router) => {
         if(cart?.completed) {
             throw new ApiError("Cart is Completed", 400, "cartCompleted")
         }
-        card.registerCard = "0"
+
         const paidPrice = cart.products.map((product) => product.price).reduce((a,b) => a+b, 0);
 
         const data = {
