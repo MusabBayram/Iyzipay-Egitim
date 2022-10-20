@@ -265,7 +265,7 @@ export default (router) => {
     
     })
     // VAR OLAN BİR KARTLA ÖDEME YAP - cardtoken 
-    router.post("/payments/:cartId/with-registered-card-index", Session, async (req,res) => {
+    router.post("/payments/:cartId/with-registered-card-token", Session, async (req,res) => {
         let { cardIndex } = req.params;
         if(!cardIndex) {
             throw new ApiError("Card index is required", 400, "cardIndexRequired")
