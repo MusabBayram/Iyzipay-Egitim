@@ -266,24 +266,14 @@ export default (router) => {
     })
     // VAR OLAN BİR KARTLA ÖDEME YAP - cardtoken 
     router.post("/payments/:cartId/with-registered-card-token", Session, async (req,res) => {
-        let { cardIndex } = req.params;
-        if(!cardIndex) {
-            throw new ApiError("Card index is required", 400, "cardIndexRequired")
+        let { cardToken } = req.body;
+        if(!cardToken) {
+            throw new ApiError("Card token is required", 400, "cardTokenRequired")
         }
         if(!req.user?.cardUserKey) {
             throw new ApiError("No registred card available", 400, "cardUserKeyRequired")
         }
-        const cards = await Cards.getUserCards({            
-            locale: req.user.locale,
-            conversationId: nanoid(),
-            cardUserKey: req.user?.cardUserKey
-        })
-        const index = parseInt(cardIndex);
-        if(index >= cards?.cardDetails?.length) {            
-            throw new ApiError("Card doesn't exists", 400, "cardIndexInvalid")
-        }
-        const { cardToken } = cards?.cardDetails[index];
-
+        
         if(!req.params?.cartId) {
             throw new ApiError("Card id is required", 400, "cardIdRequired")
         }
