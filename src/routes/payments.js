@@ -272,8 +272,7 @@ export default (router) => {
         }
         if(!req.user?.cardUserKey) {
             throw new ApiError("No registred card available", 400, "cardUserKeyRequired")
-        }
-        
+        }        
         if(!req.params?.cartId) {
             throw new ApiError("Card id is required", 400, "cardIdRequired")
         }
