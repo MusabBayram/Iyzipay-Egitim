@@ -9,7 +9,7 @@ const CartsSchema = new Schema({
     uid:{
         type: String,
         default: nanoid(),
-        unique: true,
+        //unique: true,
         required: true
     },
     completed:{
