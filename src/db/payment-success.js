@@ -9,7 +9,7 @@ const ItemTransactionSchema = new Schema({
         type: String,
         default: nanoid(),
         unique: true,
-        required: true
+        required: false
     },
     itemId:{
         type: ObjectId,
