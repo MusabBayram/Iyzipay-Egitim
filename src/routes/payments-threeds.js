@@ -9,3 +9,6 @@ import nanoid from "../utils/nanoid";
 import { CompletePayment } from "../utils/payments";
 import Iyzipay from "iyzipay";
 
+export default (router) =>{
+    
+}
