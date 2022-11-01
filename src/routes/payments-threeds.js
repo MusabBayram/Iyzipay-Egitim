@@ -9,6 +9,22 @@ import nanoid from "../utils/nanoid";
 import { CompletePayment } from "../utils/payments";
 import Iyzipay from "iyzipay";
 
-export default (router) =>{
-    
+export default (router) => {
+    router.post("/threeds/payments/complete", async (req, res) => {
+        if(!req.body?.paymentId) {
+            throw new ApiError("Payment id is required", 400, "paymentIdReqired");
+        }
+        if(req.body.status !== "success") {
+            throw new ApiError("Payment cant be starred because initialization is failed", 400,"initializationFailed");
+        }
+        const data = {
+            locale: "tr",
+            conversationId: nanoid(),
+            paymentId: req.body.paymentId,
+            conversationData: req.body.conversationData
+        }
+        const result = await PaymentsThreeDS.completePayment(data);
+        await CompletePayment(result);
+        res.status(200).json(result);
+    })
 }
