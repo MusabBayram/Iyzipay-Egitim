@@ -57,6 +57,7 @@ export default (router) => {
             basketId: String(cart?._id),
             paymentChannel: Iyzipay.PAYMENT_CHANNEL.WEB,
             paymentGroup: Iyzipay.PAYMENT_GROUP.PRODUCT,
+            callbackUrl: `${process.env.END_POINT}/threeds/payments/:cartId/with-new-card`,
             paymentCard: card,
             buyer: {
                 id: String(req.user._id),
@@ -99,9 +100,9 @@ export default (router) => {
             })
         }
 
-        let result = await Payments.createPayment(data);
-        await CompletePayment(result);
-        res.json(result);
+        let result = await PaymentsThreeDS.initializePayment(data);
+        const html = Buffer.from(result?.threeDSHtmlContent, 'base64').toString();
+        res.send(html);
     
     })
 }
