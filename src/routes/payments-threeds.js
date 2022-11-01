@@ -185,11 +185,29 @@ export default (router) => {
         res.send(html);
     
     })
-    // VAROLAN BİR KARTLA ÖDEME OLUŞTUR VE KARTI KAYDET - Threeds
+    // VAROLAN BİR KARTLA ÖDEME OLUŞTUR VE KARTI KAYDET - Threeds Card Index
     router.post("/threeds/payments/:cartId/:cartIndex/with-registered-card-index", Session, async (req,res) => {
-        const { card } = req.body;
-        if(!card) {
-            throw new ApiError("Card is required", 400, "cardRequired")
+        let { cardIndex } = req.params;
+        if(!cardIndex) {
+            throw new ApiError("Card index is required", 400, "cardIndexRequired")
+        }
+        if(!req.user?.cardUserKey) {
+            throw new ApiError("No registred card available", 400, "cardUserKeyRequired")
+        }
+        const cards = await Cards.getUserCards({            
+            locale: req.user.locale,
+            conversationId: nanoid(),
+            cardUserKey: req.user?.cardUserKey
+        })
+        const index = parseInt(cardIndex);
+        if(index >= cards?.cardDetails?.length) {            
+            throw new ApiError("Card doesn't exists", 400, "cardIndexInvalid")
+        }
+        const { cardToken } = cards?.cardDetails[index];
+        
+        const card = {            
+            cardToken,
+            cardUserKey: req.user?.cardUserKey
         }
         if(!req.params?.cartId) {
             throw new ApiError("Card id is required", 400, "cardIdRequired")
@@ -204,7 +222,6 @@ export default (router) => {
         if(req.user?.cardUserKey) {
             card.cardUserKey = req.user?.cardUserKey
         }
-        card.registerCard = "1"
         const paidPrice = cart.products.map((product) => product.price).reduce((a,b) => a+b, 0);
 
         const data = {
