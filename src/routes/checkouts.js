@@ -96,6 +96,15 @@ export default (router) => {
             }
             let result = await Checkout.initialize(data);
             res.json(result);
+            const html = `<!DOCTYPE html>
+<html>
+<head>
+<title>Ödeme Yap</title>
+<meta charset="UTF-8" />
+${result?.checkoutFormContent}
+</head>
+</html>
+`
             // let result = await PaymentsThreeDS.initializePayment(data);
             // const html = Buffer.from(result?.threeDSHtmlContent, 'base64').toString();
             // res.send(html);
