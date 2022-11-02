@@ -4,6 +4,7 @@ import Cards from "./cards"
 import Installments from "./installments";
 import Payments from "./payments";
 import PaymentsThreeDS from "./payments-threeds";
+import Checkouts from "./checkouts";
 
 export default [
     Test,
@@ -11,5 +12,6 @@ export default [
     Cards,
     Installments,
     Payments,
-    PaymentsThreeDS
+    PaymentsThreeDS,
+    Checkouts
 ]
