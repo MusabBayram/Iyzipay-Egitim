@@ -10,5 +10,14 @@ import { CompletePayment } from "../utils/payments";
 import Iyzipay from "iyzipay";
 
 export default (router) => {
-    
+    //CHECKOUT FORM COMPLETE
+    router.post("/checkout/complete/payment", async (req, res) => {
+        let result = await Checkout.getFormPayment({
+            locale: "tr",
+            conversationId: nanoid(),
+            token: req.body.token
+        });
+        await CompletePayment(result);
+        res.json(result);
+    })
 }
