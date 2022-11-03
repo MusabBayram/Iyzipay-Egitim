@@ -164,8 +164,8 @@ Users.initializer = async () => {
     console.log(`${created.length} users created`);
     console.log(Users.starterData);
   }
-};
+}; //Users.initializer();
 
-Users.initializer();
+
 var _default = Users;
 exports.default = _default;

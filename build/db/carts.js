@@ -23,7 +23,7 @@ const CartsSchema = new Schema({
   uid: {
     type: String,
     default: (0, _nanoid.default)(),
-    unique: true,
+    //unique: true,
     required: true
   },
   completed: {
@@ -94,10 +94,11 @@ Carts.populationTest = async () => {
     itemType: 1
   }).populate('buyer');
   console.log(cart);
-};
+}; // Carts.initializer().then(async res => {
+//     await Carts.populationTest()
+// });
 
-Carts.initializer().then(async res => {
-  await Carts.populationTest();
-});
+
+Carts.populationTest();
 var _default = Carts;
 exports.default = _default;

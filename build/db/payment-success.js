@@ -22,7 +22,7 @@ const ItemTransactionSchema = new Schema({
     type: String,
     default: (0, _nanoid.default)(),
     unique: true,
-    required: true
+    required: false
   },
   itemId: {
     type: ObjectId,

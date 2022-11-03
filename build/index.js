@@ -22,11 +22,21 @@ var _cors = _interopRequireDefault(require("cors"));
 
 var _mongoose = _interopRequireDefault(require("mongoose"));
 
+var _passport = _interopRequireDefault(require("passport"));
+
+var _passportJwt = require("passport-jwt");
+
 var _db = _interopRequireDefault(require("./db"));
 
 var _GenericErrorHandler = _interopRequireDefault(require("./middlewares/GenericErrorHandler"));
 
 var _ApiError = _interopRequireDefault(require("./error/ApiError"));
+
+var _Session = _interopRequireDefault(require("./middlewares/Session"));
+
+var _users = _interopRequireDefault(require("./db/users"));
+
+var _routes = _interopRequireDefault(require("./routes"));
 
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 
@@ -52,6 +62,9 @@ _mongoose.default.connect(process.env.MONGO_URI, {
 
 
 const app = (0, _express.default)();
+
+const router = _express.default.Router();
+
 app.use((0, _morgan.default)(process.env.LOGGER));
 app.use((0, _helmet.default)());
 app.use((0, _cors.default)({
@@ -63,10 +76,51 @@ app.use(_express.default.json({
 app.use(_express.default.urlencoded({
   extended: true
 }));
-app.use("/", (req, res) => {
-  throw new _ApiError.default("Bir hata oluştu", 404, "somethingWrong");
+
+_passport.default.serializeUser((user, done) => {
+  done(null, user);
+});
+
+_passport.default.deserializeUser((id, done) => {
+  done(null, id);
+});
+
+app.use(_passport.default.initialize());
+const jwtOpts = {
+  jwtFromRequest: _passportJwt.ExtractJwt.fromAuthHeaderAsBearerToken(),
+  secretOrKey: process.env.JWT_SECRET
+};
+
+_passport.default.use(new _passportJwt.Strategy(jwtOpts, async (jwtPayload, done) => {
+  try {
+    const user = await _users.default.findOne({
+      _id: jwtPayload._id
+    });
+
+    if (user) {
+      done(null, user.toJSON());
+    } else {
+      done(new _ApiError.default("Autorization is not valid", 401, "authorizationInvalid"), false);
+    }
+  } catch (err) {
+    return done(err, false);
+  }
+})); // app.use("/", (req, res) => {
+//     throw new ApiError("Bir hata oluştu", 404, "somethingWrong")
+//     res.json({
+//         test: 1
+//     })
+// })
+
+
+_routes.default.forEach((routeFn, index) => {
+  routeFn(router);
+});
+
+app.use("/api", router);
+app.all("/test-auth", _Session.default, (req, res) => {
   res.json({
-    test: 1
+    test: true
   });
 });
 app.use(_GenericErrorHandler.default);
