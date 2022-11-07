@@ -4,4 +4,4 @@ PORT = 8080
 LOGGER = tiny
 MONGO_URI = mongodb+srv://payment-system-backend:2nn8CUBJ4n5O3tJO@cluster0.wod4tg5.mongodb.net/payments-system-production?retryWrites=true&w=majority
 JWT_SECRET = sdfASfDdFVdbSDShbAsdasbFASDadfbh_sdfv
-END_POINT = https://asjdasjdjk.heroku.com/api
+END_POINT = https://iyzipay-egitim.herokuapp.com/api
