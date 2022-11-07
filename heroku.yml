@@ -1,0 +1,3 @@
+buld:
+  docker:
+    web: Dockerfile
