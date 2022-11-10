@@ -10,7 +10,7 @@ import { CompletePayment } from "../utils/payments";
 import Iyzipay from "iyzipay";
 
 export default (router) => {
-    //Complete Payment  
+    //Complete Payment
     router.post("/threeds/payments/complete", async (req, res) => {
         if(!req.body?.paymentId) {
             throw new ApiError("Payment id is required", 400, "paymentIdReqired");
